@@ -52,12 +52,11 @@
 </head>
 <body class="min-h-screen pb-24 font-sans selection:bg-sage-300 selection:text-white" onclick="initAudio()">
 
-  <!-- 頂部導覽列與時鐘 (專屬 Logo 完美融合版) -->
-  <!-- 將背景改為 bg-sage-50/90 讓 Logo 完美融入 -->
-  <header class="bg-sage-50/90 backdrop-blur-md shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center rounded-b-2xl mb-4 border-b border-sage-100/50">
+  <!-- 頂部導覽列與時鐘 (自動去背 Logo) -->
+  <header class="bg-sage-50 backdrop-blur-md shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center rounded-b-2xl mb-4 border-b border-sage-100/50">
     <div class="flex items-center gap-2">
-      <!-- 這裡使用了 mix-blend-multiply，可以把照片的淺色背景去掉，像浮水印一樣貼在網頁上 -->
-      <img src="image.png" alt="專屬Logo" class="w-12 h-12 object-cover mix-blend-multiply rounded-full" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2QxZDVkOCI+PHBhdGggZD0iTTEyIDJhMTAgMTAgMCAxIDAgMTAgMTAgMTAgMTAgMCAwIDAtMTAtMTB6Ii8+PC9zdmc+'">
+      <!-- 🌟 CSS 魔法區：自動將淺色背景透明化，保留烏龜本體 🌟 -->
+      <img src="image.png" alt="專屬Logo" class="w-14 h-14 object-cover mix-blend-multiply" style="filter: contrast(1.15) brightness(1.05);" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2QxZDVkOCI+PHBhdGggZD0iTTEyIDJhMTAgMTAgMCAxIDAgMTAgMTAgMTAgMTAgMCAwIDAtMTAtMTB6Ii8+PC9zdmc+'">
       <div>
         <h1 class="text-lg font-bold text-sage-700 tracking-wider">烏龜日常紀錄</h1>
         <div id="clockDisplay" class="text-xs text-sage-500 font-medium opacity-80">00:00:00</div>
@@ -74,25 +73,6 @@
   </header>
 
   <main class="max-w-md mx-auto px-4 space-y-4">
-
-    <!-- 🌟 專屬封面照區塊 🌟 -->
-    <section class="bg-white rounded-2xl shadow-sm border border-sage-50 overflow-hidden relative cursor-pointer group" onclick="document.getElementById('cover-upload').click()">
-      <div id="cover-container" class="w-full h-40 bg-sage-100 flex items-center justify-center relative overflow-hidden">
-        <img id="cover-image" src="" alt="封面照片" class="w-full h-full object-cover hidden transition duration-500">
-        
-        <div id="cover-placeholder" class="text-sage-500 flex flex-col items-center gap-2">
-          <i class="ph ph-camera-plus text-4xl"></i>
-          <span class="text-sm font-bold tracking-wide">點擊設定寶貝專屬封面照</span>
-        </div>
-
-        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-          <span class="text-white font-bold text-sm bg-black/50 px-4 py-2 rounded-full backdrop-blur-md flex items-center gap-2">
-            <i class="ph ph-image"></i> 更換封面照片
-          </span>
-        </div>
-      </div>
-      <input type="file" id="cover-upload" accept="image/*" class="hidden" onchange="handleCoverUpload(event)">
-    </section>
 
     <!-- 日期選擇器 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-sage-50 flex items-center gap-3">
@@ -295,9 +275,9 @@
       </div>
     </div>
 
-    <!-- 底部專屬品牌小 Logo (同樣套用完美融合效果) -->
+    <!-- 底部專屬品牌小 Logo (同樣自動去背) -->
     <div class="text-center mt-6 mb-2 flex justify-center items-center gap-1.5 opacity-60 hover:opacity-100 transition cursor-default">
-      <img src="image.png" alt="Logo" class="w-5 h-5 rounded-full mix-blend-multiply grayscale" onerror="this.style.display='none'">
+      <img src="image.png" alt="Logo" class="w-6 h-6 object-cover mix-blend-multiply grayscale" style="filter: contrast(1.15) brightness(1.05);" onerror="this.style.display='none'">
       <span class="text-[10px] font-bold text-sage-700 tracking-widest uppercase">Turtle Daily Tracker</span>
     </div>
 
@@ -345,14 +325,9 @@
   </div>
 
   <script>
-    /* =========================================
-       0. 音效系統 (療癒水滴聲)
-       ========================================= */
     let audioCtx = null;
     function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
     
     function playClickSound() {
@@ -377,9 +352,6 @@
       osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    /* =========================================
-       1. 輕量級 IndexedDB 封裝
-       ========================================= */
     const DB = {
       dbName: 'TurtleProDB', storeSettings: 'settingsStore', storeData: 'dataStore', db: null,
       async init() {
@@ -412,18 +384,12 @@
       }
     };
 
-    /* =========================================
-       2. 系統狀態與資料結構
-       ========================================= */
-    let appState = { turtles: [{ name: "小烏龜", birthday: "" }], lamps: { uvb: "", heat: "" }, coverPhoto: "" };
+    let appState = { turtles: [{ name: "小烏龜", birthday: "" }], lamps: { uvb: "", heat: "" } };
     const createEmptyRecord = () => ({ weight: "", length: "", width: "", temp: "", humid: "", soak: "", diet: "", poop: "", urate: "", notes: "", photos: [] });
     let currentDailyData = [createEmptyRecord(), createEmptyRecord()];
     let activeTurtleIndex = 0;
     let selectedDate = new Date().toISOString().split('T')[0];
 
-    /* =========================================
-       3. 年齡計算機
-       ========================================= */
     function calculateAge(bdayStr) {
       if (!bdayStr) return '尚未設定日期';
       const bday = new Date(bdayStr);
@@ -456,9 +422,6 @@
       return text.replace('已陪伴 ', '').replace('尚未設定日期', '').replace('還沒出生/到家呢', '');
     }
 
-    /* =========================================
-       4. 初始化與時鐘系統
-       ========================================= */
     async function initApp() {
       await DB.init();
       updateClock();
@@ -475,7 +438,6 @@
         setTimeout(openSettings, 500);
       }
 
-      renderCoverPhoto();
       updateLampUI();
       renderAppLayout();
       loadDateData(); 
@@ -509,46 +471,6 @@
       }
     }
 
-    /* =========================================
-       5. 專屬封面照功能
-       ========================================= */
-    async function handleCoverUpload(event) {
-      const files = event.target.files;
-      if (!files || files.length === 0) return;
-      
-      playClickSound();
-      Swal.fire({ title: '封面設定中...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-      
-      try {
-        const base64 = await compressImage(files[0], 1200);
-        appState.coverPhoto = base64;
-        await DB.set(DB.storeSettings, 'userConfig', appState);
-        renderCoverPhoto();
-        Swal.fire({ icon: 'success', title: '封面更換成功！', confirmButtonColor: '#6B9071', timer: 1500 });
-      } catch (e) {
-        Swal.fire({ icon: 'error', title: '處理失敗' });
-      }
-      event.target.value = ''; 
-    }
-
-    function renderCoverPhoto() {
-      const coverImg = document.getElementById('cover-image');
-      const placeholder = document.getElementById('cover-placeholder');
-      
-      if (appState.coverPhoto) {
-        coverImg.src = appState.coverPhoto;
-        coverImg.classList.remove('hidden');
-        placeholder.classList.add('hidden');
-      } else {
-        coverImg.src = '';
-        coverImg.classList.add('hidden');
-        placeholder.classList.remove('hidden');
-      }
-    }
-
-    /* =========================================
-       6. 版面與頁籤切換
-       ========================================= */
     function renderAppLayout() {
       const isTwoTurtles = appState.turtles.length === 2;
       const t0 = appState.turtles[0];
@@ -613,9 +535,6 @@
       updateComparisonTable();
     }
 
-    /* =========================================
-       7. 表單與資料綁定
-       ========================================= */
     function saveFormToTemp() {
       const d = currentDailyData[activeTurtleIndex];
       d.weight = document.getElementById('input-weight').value;
@@ -657,9 +576,6 @@
       }
     }
 
-    /* =========================================
-       8. 燈具與對照表
-       ========================================= */
     function calcDays(dateString) {
       if (!dateString) return '--';
       return Math.floor((new Date().getTime() - new Date(dateString).getTime()) / (1000 * 3600 * 24));
@@ -739,9 +655,6 @@
       }
     }
 
-    /* =========================================
-       9. 照片處理與 Canvas 壓縮
-       ========================================= */
     async function handlePhotoUpload(event) {
       const files = event.target.files;
       if (!files || files.length === 0) return;
@@ -790,9 +703,6 @@
       });
     }
 
-    /* =========================================
-       10. 設定與分享功能
-       ========================================= */
     function openSettings() {
       playClickSound(); 
       document.getElementById('settingsModal').classList.remove('hidden');
