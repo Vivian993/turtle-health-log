@@ -23,6 +23,10 @@
     --clay: #C98A5E;
     --line: #E7DFCF;
     --danger: #C4664F;
+    --surface: #FFFFFF;
+    --thumb-bg: #EDE6D8;
+    --chip-bg: #F1EADB;
+    --flag-bg: #F7E7E1;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -39,7 +43,7 @@
   header .header-actions { display: flex; justify-content: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
   header .mini-btn {
     font-size: 12px; color: var(--muted); border: 1px dashed var(--muted); border-radius: 20px;
-    padding: 5px 12px; cursor: pointer; background: #fff; display: inline-flex; align-items: center; gap: 4px;
+    padding: 5px 12px; cursor: pointer; background: var(--surface); display: inline-flex; align-items: center; gap: 4px;
   }
   header .mini-btn input { display: none; }
   header .mini-link { font-size: 12px; color: var(--danger); cursor: pointer; text-decoration: underline; align-self: center; }
@@ -63,7 +67,7 @@
   .lamp-sub.overdue { color: var(--danger); font-weight: 700; }
   .lamp-row input[type=date] {
     border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px;
-    font-size: 13px; font-family: inherit; background: #fff; color: var(--ink);
+    font-size: 13px; font-family: inherit; background: var(--surface); color: var(--ink);
   }
 
   .tag-toggle {
@@ -104,7 +108,7 @@
   .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .cal-nav .month-label { font-weight: 700; font-size: 15px; color: var(--green-dark); }
   .cal-nav button {
-    border: 1px solid var(--line); background: #fff; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--surface); border-radius: 8px;
     width: 32px; height: 32px; font-size: 15px; color: var(--muted); cursor: pointer;
   }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
@@ -119,7 +123,7 @@
   .cal-day .day-icons { font-size: 9px; line-height: 1; letter-spacing: -1px; }
   .cal-day.empty { cursor: default; }
   .cal-day.today { border-color: var(--muted); font-weight: 700; }
-  .cal-day.flagged { background: #F7E7E1; }
+  .cal-day.flagged { background: var(--flag-bg); }
   .cal-day.selected { background: var(--green); color: #fff; font-weight: 700; }
   .cal-day.selected.flagged { background: var(--danger); }
   .tab-2-active .cal-day.selected { background: var(--clay); }
@@ -129,7 +133,7 @@
   .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
   .field input[type=number], .field input[type=text], .field input[type=date], .field textarea {
     width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px;
-    font-size: 15px; font-family: inherit; background: #fff; color: var(--ink);
+    font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink);
   }
   .field textarea { resize: vertical; min-height: 60px; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -147,12 +151,18 @@
     border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 12px;
   }
   .modal-card .turtle-group .group-label { font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+  .theme-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+  .theme-swatch {
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    border: 3px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,.15);
+  }
+  .theme-swatch.selected { border-color: var(--ink); }
 
   .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .toggle-btn {
     flex: 1; min-width: 60px; padding: 10px 0; text-align: center;
     border: 1px solid var(--line); border-radius: 10px; font-size: 14px; font-weight: 600;
-    cursor: pointer; background: #fff; color: var(--muted);
+    cursor: pointer; background: var(--surface); color: var(--muted);
   }
   .toggle-btn.selected { background: var(--green); border-color: var(--green); color: #fff; }
   .tab-2-active .toggle-btn.selected { background: var(--clay); border-color: var(--clay); }
@@ -161,7 +171,7 @@
   .photo-thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
   .photo-thumb {
     position: relative; width: 60px; height: 60px; border-radius: 10px;
-    background: #EDE6D8; background-size: cover; background-position: center;
+    background: var(--thumb-bg); background-size: cover; background-position: center;
     border: 1px solid var(--line); flex-shrink: 0;
   }
   .photo-remove {
@@ -173,7 +183,7 @@
   .photo-empty-hint { font-size: 12px; color: var(--muted); }
   .photo-btn {
     display: inline-block; border: 1px dashed var(--muted); border-radius: 10px; padding: 10px 14px;
-    font-size: 13px; color: var(--muted); cursor: pointer; background: #fff;
+    font-size: 13px; color: var(--muted); cursor: pointer; background: var(--surface);
   }
   .photo-btn input { display: none; }
 
@@ -196,7 +206,7 @@
   .save-btn:active { opacity: .85; }
   .del-btn {
     padding: 13px 18px; border-radius: 12px; font-size: 15px; font-weight: 700;
-    color: var(--danger); background: #fff; border: 1px solid var(--danger); cursor: pointer;
+    color: var(--danger); background: var(--surface); border: 1px solid var(--danger); cursor: pointer;
   }
 
   .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
@@ -207,7 +217,7 @@
     padding: 14px 16px; margin-bottom: 10px; display: flex; gap: 12px; cursor: pointer;
   }
   .entry .thumb {
-    position: relative; width: 48px; height: 48px; border-radius: 8px; background: #EDE6D8;
+    position: relative; width: 48px; height: 48px; border-radius: 8px; background: var(--thumb-bg);
     background-size: cover; background-position: center; flex-shrink: 0;
   }
   .entry .thumb .thumb-count {
@@ -219,7 +229,7 @@
   .entry .date { font-weight: 700; font-size: 14px; }
   .entry .del { color: var(--danger); font-size: 12px; cursor: pointer; }
   .entry .stats { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--ink); margin-bottom: 4px; }
-  .entry .stats span { background: #F1EADB; padding: 3px 8px; border-radius: 20px; }
+  .entry .stats span { background: var(--chip-bg); padding: 3px 8px; border-radius: 20px; }
   .entry .notes { font-size: 13px; color: var(--muted); margin-top: 4px; white-space: pre-wrap; }
   .empty { text-align: center; color: var(--muted); font-size: 13px; padding: 30px 0; }
   .flag-no { color: var(--danger); font-weight: 700; }
@@ -256,6 +266,15 @@
   <div class="modal-overlay" id="settingsOverlay">
     <div class="modal-card">
       <h2>編輯烏龜名字與生日</h2>
+      <div class="turtle-group">
+        <div class="group-label">外觀顏色</div>
+        <div class="theme-swatches" id="themeSwatches"></div>
+        <div class="toggle-group" id="shadeToggleGroup" style="margin-top:10px;">
+          <div class="toggle-btn" data-shade="light" onclick="selectShadeUI('light')">☀️ 淺色</div>
+          <div class="toggle-btn" data-shade="dark" onclick="selectShadeUI('dark')">🌙 深色</div>
+        </div>
+        <div class="hint" style="margin-top:8px;">選好會立即套用並自動儲存，不用等下面按「儲存」。</div>
+      </div>
       <div class="turtle-group">
         <div class="group-label">養幾隻烏龜？</div>
         <div class="toggle-group" id="countToggleGroup">
@@ -474,6 +493,142 @@ if (!window.storage) {
       return { keys, prefix, shared };
     }
   };
+}
+
+// ===== 按鍵聲：用 Web Audio 合成，不依賴外部音檔，保證每次都會響 =====
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    audioCtx = new Ctx();
+  }
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+
+function playTapSound() {
+  try {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(880, now);
+    osc1.frequency.exponentialRampToValueAtTime(660, now + 0.09);
+    gain1.gain.setValueAtTime(0.0001, now);
+    gain1.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
+    gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.15);
+
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(1760, now);
+    gain2.gain.setValueAtTime(0.0001, now);
+    gain2.gain.exponentialRampToValueAtTime(0.05, now + 0.006);
+    gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now);
+    osc2.stop(now + 0.1);
+  } catch (e) { /* 靜音失敗也不影響操作 */ }
+}
+
+// 用事件代理統一綁定，確保「所有」按鈕都一定有聲音，不會有的有有的沒有
+document.addEventListener("click", function(e) {
+  const target = e.target.closest(
+    ".toggle-btn, .tab, .save-btn, .del-btn, .cal-nav button, .cal-day:not(.empty), " +
+    ".month-photo-thumb, .mini-btn, .photo-remove, .del, .mini-link, .tag-toggle, " +
+    ".entry, .theme-swatch, .photo-btn"
+  );
+  if (target) playTapSound();
+}, true);
+
+// ===== 外觀主題（顏色配色＋淺色/深色） =====
+const THEME_PALETTES = [
+  { id: "forest",    name: "森林綠×陶土",   accent1: "#6B8F5E", accent1Dark: "#4A5D3A", accent2: "#C98A5E" },
+  { id: "ocean",     name: "海洋藍×珊瑚",   accent1: "#4A7C9E", accent1Dark: "#2E5570", accent2: "#E08D6D" },
+  { id: "lavender",  name: "薰衣草×蜜桃",   accent1: "#8B7EC8", accent1Dark: "#5F5494", accent2: "#E8A87C" },
+  { id: "sakura",    name: "櫻花粉×抹茶",   accent1: "#D98CA8", accent1Dark: "#A85D79", accent2: "#8FA86B" },
+  { id: "amber",     name: "暖陽黃×赤陶",   accent1: "#D9A441", accent1Dark: "#9C7526", accent2: "#C1654A" }
+];
+const SHADE_PRESETS = {
+  light: { bg: "#FBF3E7", card: "#FFFDF8", ink: "#3B3B3B", muted: "#8A8370", line: "#E7DFCF", danger: "#C4664F", surface: "#FFFFFF", thumbBg: "#EDE6D8", chipBg: "#F1EADB", flagBg: "#F7E7E1" },
+  dark:  { bg: "#221F19", card: "#2C2820", ink: "#EDE6D8", muted: "#A89C86", line: "#453F32", danger: "#E08670", surface: "#332E24", thumbBg: "#3A352A", chipBg: "#3A352A", flagBg: "#4A2E27" }
+};
+let themeState = { paletteId: "forest", shade: "light" };
+
+function applyTheme() {
+  const palette = THEME_PALETTES.find(p => p.id === themeState.paletteId) || THEME_PALETTES[0];
+  const shade = SHADE_PRESETS[themeState.shade] || SHADE_PRESETS.light;
+  const root = document.documentElement.style;
+  root.setProperty("--green", palette.accent1);
+  root.setProperty("--green-dark", palette.accent1Dark);
+  root.setProperty("--clay", palette.accent2);
+  root.setProperty("--bg", shade.bg);
+  root.setProperty("--card", shade.card);
+  root.setProperty("--ink", shade.ink);
+  root.setProperty("--muted", shade.muted);
+  root.setProperty("--line", shade.line);
+  root.setProperty("--danger", shade.danger);
+  root.setProperty("--surface", shade.surface);
+  root.setProperty("--thumb-bg", shade.thumbBg);
+  root.setProperty("--chip-bg", shade.chipBg);
+  root.setProperty("--flag-bg", shade.flagBg);
+}
+
+function renderThemeSwatches() {
+  const wrap = document.getElementById("themeSwatches");
+  if (!wrap) return;
+  wrap.innerHTML = THEME_PALETTES.map(p => `
+    <div class="theme-swatch${p.id === themeState.paletteId ? " selected" : ""}" data-palette="${p.id}"
+         style="background: linear-gradient(135deg, ${p.accent1} 50%, ${p.accent2} 50%);"
+         onclick="selectPaletteUI('${p.id}')" title="${p.name}"></div>
+  `).join("");
+}
+
+function selectPaletteUI(id) {
+  themeState.paletteId = id;
+  applyTheme();
+  renderThemeSwatches();
+  saveTheme();
+}
+
+function selectShadeUI(shade) {
+  themeState.shade = shade;
+  applyTheme();
+  document.querySelectorAll("#shadeToggleGroup .toggle-btn").forEach(b => {
+    b.classList.toggle("selected", b.dataset.shade === shade);
+  });
+  saveTheme();
+}
+
+async function saveTheme() {
+  try {
+    await window.storage.set("settings:theme", JSON.stringify(themeState), false);
+  } catch (e) { console.error(e); }
+}
+
+async function loadTheme() {
+  try {
+    const r = await window.storage.get("settings:theme", false);
+    if (r && r.value) {
+      const parsed = JSON.parse(r.value);
+      if (parsed.paletteId) themeState.paletteId = parsed.paletteId;
+      if (parsed.shade) themeState.shade = parsed.shade;
+    }
+  } catch (e) { /* use defaults */ }
+  applyTheme();
+  renderThemeSwatches();
+  document.querySelectorAll("#shadeToggleGroup .toggle-btn").forEach(b => {
+    b.classList.toggle("selected", b.dataset.shade === themeState.shade);
+  });
 }
 
 const DEFAULT_HEADER_IMG = document.getElementById("headerImg").src;
@@ -1277,6 +1432,7 @@ async function updateLampDate(type, value) {
   document.getElementById("formTitle").textContent = "今天的紀錄";
   updateClock();
   setInterval(updateClock, 1000);
+  await loadTheme();
   await migrateLegacyEntries();
   await loadTurtleSettings();
   await loadHeaderImage();
