@@ -52,26 +52,47 @@
 </head>
 <body class="min-h-screen pb-24 font-sans selection:bg-sage-300 selection:text-white" onclick="initAudio()">
 
-  <!-- 頂部導覽列與時鐘 (專屬 Logo & 分享) -->
-  <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center rounded-b-2xl mb-4">
-    <div class="flex items-center gap-3">
-      <img src="image.png" alt="專屬Logo" class="w-10 h-10 rounded-full object-cover shadow-sm border-2 border-white">
+  <!-- 頂部導覽列與時鐘 (專屬 Logo 完美融合版) -->
+  <!-- 將背景改為 bg-sage-50/90 讓 Logo 完美融入 -->
+  <header class="bg-sage-50/90 backdrop-blur-md shadow-sm sticky top-0 z-50 px-4 py-3 flex justify-between items-center rounded-b-2xl mb-4 border-b border-sage-100/50">
+    <div class="flex items-center gap-2">
+      <!-- 這裡使用了 mix-blend-multiply，可以把照片的淺色背景去掉，像浮水印一樣貼在網頁上 -->
+      <img src="image.png" alt="專屬Logo" class="w-12 h-12 object-cover mix-blend-multiply rounded-full" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2QxZDVkOCI+PHBhdGggZD0iTTEyIDJhMTAgMTAgMCAxIDAgMTAgMTAgMTAgMTAgMCAwIDAtMTAtMTB6Ii8+PC9zdmc+'">
       <div>
         <h1 class="text-lg font-bold text-sage-700 tracking-wider">烏龜日常紀錄</h1>
-        <div id="clockDisplay" class="text-xs text-sage-500 font-medium">00:00:00</div>
+        <div id="clockDisplay" class="text-xs text-sage-500 font-medium opacity-80">00:00:00</div>
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <button onclick="shareApp()" class="p-2 rounded-full bg-sage-50 text-sage-500 hover:bg-sage-100 transition shadow-sm">
+      <button onclick="shareApp()" class="p-2 rounded-full bg-white/60 text-sage-500 hover:bg-sage-100 transition shadow-sm">
         <i class="ph ph-share-network text-xl"></i>
       </button>
-      <button onclick="openSettings()" class="p-2 rounded-full bg-sage-50 text-sage-500 hover:bg-sage-100 transition shadow-sm">
+      <button onclick="openSettings()" class="p-2 rounded-full bg-white/60 text-sage-500 hover:bg-sage-100 transition shadow-sm">
         <i class="ph ph-gear text-xl"></i>
       </button>
     </div>
   </header>
 
   <main class="max-w-md mx-auto px-4 space-y-4">
+
+    <!-- 🌟 專屬封面照區塊 🌟 -->
+    <section class="bg-white rounded-2xl shadow-sm border border-sage-50 overflow-hidden relative cursor-pointer group" onclick="document.getElementById('cover-upload').click()">
+      <div id="cover-container" class="w-full h-40 bg-sage-100 flex items-center justify-center relative overflow-hidden">
+        <img id="cover-image" src="" alt="封面照片" class="w-full h-full object-cover hidden transition duration-500">
+        
+        <div id="cover-placeholder" class="text-sage-500 flex flex-col items-center gap-2">
+          <i class="ph ph-camera-plus text-4xl"></i>
+          <span class="text-sm font-bold tracking-wide">點擊設定寶貝專屬封面照</span>
+        </div>
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <span class="text-white font-bold text-sm bg-black/50 px-4 py-2 rounded-full backdrop-blur-md flex items-center gap-2">
+            <i class="ph ph-image"></i> 更換封面照片
+          </span>
+        </div>
+      </div>
+      <input type="file" id="cover-upload" accept="image/*" class="hidden" onchange="handleCoverUpload(event)">
+    </section>
 
     <!-- 日期選擇器 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-sage-50 flex items-center gap-3">
@@ -89,12 +110,12 @@
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-sage-50">
       <h2 class="text-sm font-bold text-sage-700 mb-3 flex items-center gap-2"><i class="ph ph-lightbulb"></i> 燈具狀態</h2>
       <div class="flex justify-between items-center gap-4">
-        <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl" onclick="updateLampDate('uvb')">
+        <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl hover:bg-sage-100 transition" onclick="updateLampDate('uvb')">
           <i id="uvb-icon" class="ph ph-sun-dim text-2xl text-yellow-500 transition-colors duration-300"></i>
           <span class="text-xs font-bold text-gray-500">UVB燈</span>
           <span id="uvb-date-display" class="text-sm font-bold text-sage-700 transition-colors duration-300">--天前</span>
         </div>
-        <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl" onclick="updateLampDate('heat')">
+        <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl hover:bg-sage-100 transition" onclick="updateLampDate('heat')">
           <i id="heat-icon" class="ph ph-thermometer-hot text-2xl text-orange-500 transition-colors duration-300"></i>
           <span class="text-xs font-bold text-gray-500">加熱燈</span>
           <span id="heat-date-display" class="text-sm font-bold text-sage-700 transition-colors duration-300">--天前</span>
@@ -124,15 +145,15 @@
         <div id="sec-body" class="section-content p-4 grid grid-cols-2 gap-4">
           <div class="col-span-2">
             <label class="block text-xs font-bold text-gray-400 mb-1">體重 (g)</label>
-            <input type="number" id="input-weight" placeholder="例: 150" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+            <input type="number" id="input-weight" placeholder="例: 150" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-1">背甲長 (cm)</label>
-            <input type="number" id="input-length" step="0.1" placeholder="例: 8.5" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+            <input type="number" id="input-length" step="0.1" placeholder="例: 8.5" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-1">背甲寬 (cm)</label>
-            <input type="number" id="input-width" step="0.1" placeholder="例: 7.2" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+            <input type="number" id="input-width" step="0.1" placeholder="例: 7.2" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
           </div>
         </div>
       </div>
@@ -147,16 +168,16 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-gray-400 mb-1">溫度 (°C)</label>
-              <input type="number" id="input-temp" placeholder="例: 30" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+              <input type="number" id="input-temp" placeholder="例: 30" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-400 mb-1">濕度 (%)</label>
-              <input type="number" id="input-humid" placeholder="例: 60" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+              <input type="number" id="input-humid" placeholder="例: 60" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
             </div>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-1">泡水紀錄</label>
-            <input type="text" id="input-soak" placeholder="例: 溫水泡 15 分鐘" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+            <input type="text" id="input-soak" placeholder="例: 溫水泡 15 分鐘" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
           </div>
         </div>
       </div>
@@ -170,12 +191,12 @@
         <div id="sec-diet" class="section-content p-4 space-y-3">
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-1">餵食內容</label>
-            <textarea id="input-diet" rows="2" placeholder="今天吃了什麼？" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 resize-none"></textarea>
+            <textarea id="input-diet" rows="2" placeholder="今天吃了什麼？" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 resize-none transition"></textarea>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-gray-400 mb-1">排便</label>
-              <select id="input-poop" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+              <select id="input-poop" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
                 <option value="">請選擇</option>
                 <option value="無">無</option>
                 <option value="正常">正常</option>
@@ -184,7 +205,7 @@
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-400 mb-1">排酸</label>
-              <select id="input-urate" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300">
+              <select id="input-urate" class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 transition">
                 <option value="">請選擇</option>
                 <option value="無">無</option>
                 <option value="牙膏狀(佳)">牙膏狀 (佳)</option>
@@ -199,22 +220,22 @@
       <!-- 區塊 4：照片與備註 -->
       <div class="bg-white rounded-2xl shadow-sm border border-sage-50 overflow-hidden">
         <div class="p-4 bg-sage-50/50 flex justify-between items-center cursor-pointer" onclick="toggleSection('sec-note')">
-          <h3 class="font-bold text-sage-700 flex items-center gap-2"><i class="ph ph-camera"></i> 影像與備註</h3>
+          <h3 class="font-bold text-sage-700 flex items-center gap-2"><i class="ph ph-camera"></i> 日常影像庫與備註</h3>
           <i class="ph ph-caret-down text-sage-500 transition-transform duration-300" id="arrow-sec-note"></i>
         </div>
         <div id="sec-note" class="section-content p-4 space-y-4">
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-1">生活備註</label>
-            <textarea id="input-notes" rows="2" placeholder="紀錄今天的活動力、趣事等..." class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 resize-none"></textarea>
+            <textarea id="input-notes" rows="2" placeholder="紀錄今天的活動力、趣事等..." class="w-full bg-sage-50 text-sage-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-sage-300 resize-none transition"></textarea>
           </div>
           <div>
             <label class="flex justify-between items-center text-xs font-bold text-gray-400 mb-2">
-              <span>生活照 (自動壓縮)</span>
+              <span>生活照 (自動壓縮不佔空間)</span>
               <span id="photo-count" class="bg-sage-100 text-sage-700 px-2 py-1 rounded-md">0/6</span>
             </label>
             <div class="photo-grid mb-2" id="photo-container"></div>
-            <label class="flex justify-center items-center gap-2 w-full bg-earth-100 text-sage-700 p-2 rounded-lg cursor-pointer hover:bg-sage-100 transition font-bold border border-dashed border-sage-300">
-              <i class="ph ph-image-square text-lg"></i> 加入照片
+            <label class="flex justify-center items-center gap-2 w-full bg-earth-100 text-sage-700 p-3 rounded-xl cursor-pointer hover:bg-sage-100 transition font-bold border-2 border-dashed border-sage-200">
+              <i class="ph ph-images text-xl"></i> 新增今日照片
               <input type="file" id="photo-upload" accept="image/*" multiple onchange="handlePhotoUpload(event)">
             </label>
           </div>
@@ -261,7 +282,7 @@
       </div>
     </section>
 
-    <!-- 底部生日顯示區 (加入年齡顯示) -->
+    <!-- 底部生日顯示區 -->
     <div id="birthdays-container" class="text-center space-y-2 mt-8 hidden">
       <div class="inline-flex flex-col items-center gap-1 bg-white/60 px-5 py-2.5 rounded-2xl shadow-sm border border-white/50 backdrop-blur-sm">
         <div class="text-xs font-bold text-sage-700">🎂 <span id="bday-text-0"></span></div>
@@ -274,10 +295,10 @@
       </div>
     </div>
 
-    <!-- 底部專屬品牌小 Logo -->
-    <div class="text-center mt-6 mb-2 flex justify-center items-center gap-1.5 opacity-50 hover:opacity-80 transition cursor-default">
-      <img src="image.png" alt="Logo" class="w-4 h-4 rounded-full grayscale">
-      <span class="text-[9px] font-bold text-sage-700 tracking-widest uppercase">Turtle Daily Tracker</span>
+    <!-- 底部專屬品牌小 Logo (同樣套用完美融合效果) -->
+    <div class="text-center mt-6 mb-2 flex justify-center items-center gap-1.5 opacity-60 hover:opacity-100 transition cursor-default">
+      <img src="image.png" alt="Logo" class="w-5 h-5 rounded-full mix-blend-multiply grayscale" onerror="this.style.display='none'">
+      <span class="text-[10px] font-bold text-sage-700 tracking-widest uppercase">Turtle Daily Tracker</span>
     </div>
 
   </main>
@@ -285,7 +306,7 @@
   <!-- 設定視窗 (Modal) -->
   <div id="settingsModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] hidden flex justify-center items-center p-4">
     <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl transform transition-all relative max-h-[90vh] overflow-y-auto">
-      <button onclick="closeSettings()" class="absolute top-4 right-4 text-gray-400 hover:text-sage-700">
+      <button onclick="closeSettings()" class="absolute top-4 right-4 text-gray-400 hover:text-sage-700 transition">
         <i class="ph ph-x-circle text-2xl"></i>
       </button>
       
@@ -296,27 +317,27 @@
       <div class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-gray-500 mb-1">飼養數量</label>
-          <select id="set-count" class="w-full bg-sage-50 p-2 rounded-lg text-sage-700 font-bold border-none outline-none focus:ring-2 focus:ring-sage-300" onchange="toggleSettingsForm()">
+          <select id="set-count" class="w-full bg-sage-50 p-3 rounded-xl text-sage-700 font-bold border-none outline-none focus:ring-2 focus:ring-sage-300 transition" onchange="toggleSettingsForm()">
             <option value="1">1 隻</option>
             <option value="2">2 隻</option>
           </select>
         </div>
 
-        <div class="bg-sage-50 p-3 rounded-xl border border-sage-100">
-          <h3 class="font-bold text-sage-700 mb-2 border-b border-sage-200 pb-1 text-sm">第一隻寶貝</h3>
-          <input type="text" id="set-name-0" placeholder="名字" class="w-full mb-2 p-2 rounded-lg border-none outline-none text-sm">
-          <label class="block text-xs text-gray-400 mb-1">生日 / 到家日</label>
-          <input type="date" id="set-bday-0" class="w-full p-2 rounded-lg border-none outline-none text-sm text-gray-600">
+        <div class="bg-sage-50 p-4 rounded-xl border border-sage-100">
+          <h3 class="font-bold text-sage-700 mb-3 border-b border-sage-200 pb-1 text-sm">第一隻寶貝</h3>
+          <input type="text" id="set-name-0" placeholder="名字" class="w-full mb-3 p-2 rounded-lg bg-white border-none outline-none text-sm focus:ring-2 focus:ring-sage-300 transition">
+          <label class="block text-xs text-gray-400 mb-1">推算生日 / 到家日</label>
+          <input type="date" id="set-bday-0" class="w-full p-2 rounded-lg bg-white border-none outline-none text-sm text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
         </div>
 
-        <div id="settings-turtle-2" class="bg-sage-50 p-3 rounded-xl border border-sage-100 hidden">
-          <h3 class="font-bold text-sage-700 mb-2 border-b border-sage-200 pb-1 text-sm">第二隻寶貝</h3>
-          <input type="text" id="set-name-1" placeholder="名字" class="w-full mb-2 p-2 rounded-lg border-none outline-none text-sm">
-          <label class="block text-xs text-gray-400 mb-1">生日 / 到家日</label>
-          <input type="date" id="set-bday-1" class="w-full p-2 rounded-lg border-none outline-none text-sm text-gray-600">
+        <div id="settings-turtle-2" class="bg-sage-50 p-4 rounded-xl border border-sage-100 hidden">
+          <h3 class="font-bold text-sage-700 mb-3 border-b border-sage-200 pb-1 text-sm">第二隻寶貝</h3>
+          <input type="text" id="set-name-1" placeholder="名字" class="w-full mb-3 p-2 rounded-lg bg-white border-none outline-none text-sm focus:ring-2 focus:ring-sage-300 transition">
+          <label class="block text-xs text-gray-400 mb-1">推算生日 / 到家日</label>
+          <input type="date" id="set-bday-1" class="w-full p-2 rounded-lg bg-white border-none outline-none text-sm text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
         </div>
 
-        <button onclick="saveSettings()" class="w-full bg-sage-700 text-white font-bold p-3 rounded-xl mt-2 hover:bg-sage-800 transition shadow-md">
+        <button onclick="saveSettings()" class="w-full bg-sage-700 text-white font-bold p-3 rounded-xl mt-4 hover:bg-sage-800 transition shadow-md">
           儲存設定
         </button>
       </div>
@@ -343,7 +364,6 @@
       const gainNode = audioCtx.createGain();
       
       osc.type = 'sine';
-      // 模擬水滴聲的高頻下降
       osc.frequency.setValueAtTime(800, audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
       
@@ -395,14 +415,14 @@
     /* =========================================
        2. 系統狀態與資料結構
        ========================================= */
-    let appState = { turtles: [{ name: "小烏龜", birthday: "" }], lamps: { uvb: "", heat: "" } };
+    let appState = { turtles: [{ name: "小烏龜", birthday: "" }], lamps: { uvb: "", heat: "" }, coverPhoto: "" };
     const createEmptyRecord = () => ({ weight: "", length: "", width: "", temp: "", humid: "", soak: "", diet: "", poop: "", urate: "", notes: "", photos: [] });
     let currentDailyData = [createEmptyRecord(), createEmptyRecord()];
     let activeTurtleIndex = 0;
     let selectedDate = new Date().toISOString().split('T')[0];
 
     /* =========================================
-       3. 年齡計算機 (龜齡 / 陪伴時間)
+       3. 年齡計算機
        ========================================= */
     function calculateAge(bdayStr) {
       if (!bdayStr) return '尚未設定日期';
@@ -449,9 +469,13 @@
       document.getElementById('dateBadge').textContent = formatDateBadge(selectedDate);
       
       const savedSettings = await DB.get(DB.storeSettings, 'userConfig');
-      if (savedSettings) appState = savedSettings;
-      else setTimeout(openSettings, 500);
+      if (savedSettings) {
+        appState = { ...appState, ...savedSettings };
+      } else {
+        setTimeout(openSettings, 500);
+      }
 
+      renderCoverPhoto();
       updateLampUI();
       renderAppLayout();
       loadDateData(); 
@@ -471,7 +495,7 @@
     }
 
     function toggleSection(id) {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       const el = document.getElementById(id);
       const arrow = document.getElementById('arrow-' + id);
       if (el.style.maxHeight && el.style.maxHeight !== '0px') {
@@ -486,7 +510,44 @@
     }
 
     /* =========================================
-       5. 版面與頁籤切換
+       5. 專屬封面照功能
+       ========================================= */
+    async function handleCoverUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+      
+      playClickSound();
+      Swal.fire({ title: '封面設定中...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      
+      try {
+        const base64 = await compressImage(files[0], 1200);
+        appState.coverPhoto = base64;
+        await DB.set(DB.storeSettings, 'userConfig', appState);
+        renderCoverPhoto();
+        Swal.fire({ icon: 'success', title: '封面更換成功！', confirmButtonColor: '#6B9071', timer: 1500 });
+      } catch (e) {
+        Swal.fire({ icon: 'error', title: '處理失敗' });
+      }
+      event.target.value = ''; 
+    }
+
+    function renderCoverPhoto() {
+      const coverImg = document.getElementById('cover-image');
+      const placeholder = document.getElementById('cover-placeholder');
+      
+      if (appState.coverPhoto) {
+        coverImg.src = appState.coverPhoto;
+        coverImg.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        coverImg.src = '';
+        coverImg.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    /* =========================================
+       6. 版面與頁籤切換
        ========================================= */
     function renderAppLayout() {
       const isTwoTurtles = appState.turtles.length === 2;
@@ -530,7 +591,7 @@
       saveFormToTemp(); 
       activeTurtleIndex = index;
       
-      if(index === 0 || index === 1) playClickSound(); // 加上按鍵音效
+      if(index === 0 || index === 1) playClickSound(); 
       
       document.getElementById('tab-0').className = index === 0 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2";
       document.getElementById('tab-1').className = index === 1 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2";
@@ -539,7 +600,7 @@
     }
 
     async function loadDateData() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       selectedDate = document.getElementById('datePicker').value;
       document.getElementById('dateBadge').textContent = formatDateBadge(selectedDate);
       currentDailyData = [createEmptyRecord(), createEmptyRecord()];
@@ -553,7 +614,7 @@
     }
 
     /* =========================================
-       6. 表單與資料綁定
+       7. 表單與資料綁定
        ========================================= */
     function saveFormToTemp() {
       const d = currentDailyData[activeTurtleIndex];
@@ -585,7 +646,7 @@
     }
 
     async function saveCurrentData() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       saveFormToTemp();
       try {
         await DB.set(DB.storeData, selectedDate, currentDailyData);
@@ -597,7 +658,7 @@
     }
 
     /* =========================================
-       7. 燈具與對照表 (到期閃爍邏輯)
+       8. 燈具與對照表
        ========================================= */
     function calcDays(dateString) {
       if (!dateString) return '--';
@@ -612,7 +673,7 @@
       const uvbIcon = document.getElementById('uvb-icon');
       uvbDisp.innerText = uvbDays !== '--' ? `${uvbDays}天前` : '--天前';
       
-      if (uvbDays !== '--' && uvbDays >= 180) { // UVB 半年閃爍
+      if (uvbDays !== '--' && uvbDays >= 180) { 
         uvbDisp.classList.replace('text-sage-700', 'text-red-500'); uvbDisp.classList.add('animate-pulse');
         uvbIcon.classList.replace('text-yellow-500', 'text-red-500'); uvbIcon.classList.add('animate-pulse');
       } else {
@@ -624,7 +685,7 @@
       const heatIcon = document.getElementById('heat-icon');
       heatDisp.innerText = heatDays !== '--' ? `${heatDays}天前` : '--天前';
       
-      if (heatDays !== '--' && heatDays >= 365) { // 加熱燈 一年閃爍
+      if (heatDays !== '--' && heatDays >= 365) { 
         heatDisp.classList.replace('text-sage-700', 'text-red-500'); heatDisp.classList.add('animate-pulse');
         heatIcon.classList.replace('text-orange-500', 'text-red-500'); heatIcon.classList.add('animate-pulse');
       } else {
@@ -634,7 +695,7 @@
     }
 
     async function updateLampDate(type) {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       const name = type === 'uvb' ? 'UVB燈' : '加熱燈';
       const res = await Swal.fire({
         title: `更換${name}?`, text: "確定記錄更換日期為今天嗎？", icon: 'question',
@@ -650,7 +711,7 @@
 
     let isCompVisible = false;
     function toggleComparison() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       isCompVisible = !isCompVisible;
       const table = document.getElementById('comparison-table');
       const icon = document.getElementById('comp-icon');
@@ -679,7 +740,7 @@
     }
 
     /* =========================================
-       8. 照片處理與 Canvas 壓縮
+       9. 照片處理與 Canvas 壓縮
        ========================================= */
     async function handlePhotoUpload(event) {
       const files = event.target.files;
@@ -689,6 +750,7 @@
         Swal.fire({ icon: 'warning', title: '照片限制', text: '一天最多只能上傳 6 張照片喔！', confirmButtonColor: '#6B9071' });
         return;
       }
+      playClickSound();
       Swal.fire({ title: '照片壓縮處理中...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
       for (let file of files) {
         try { const base64 = await compressImage(file, 800); currentPhotos.push(base64); } catch (e) {}
@@ -722,17 +784,17 @@
             if (w > maxWidth) { h = Math.round((h * maxWidth) / w); w = maxWidth; }
             canvas.width = w; canvas.height = h;
             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/jpeg', 0.7));
+            resolve(canvas.toDataURL('image/jpeg', 0.8));
           }; img.onerror = reject;
         }; reader.onerror = reject;
       });
     }
 
     /* =========================================
-       9. 設定與分享功能
+       10. 設定與分享功能
        ========================================= */
     function openSettings() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       document.getElementById('settingsModal').classList.remove('hidden');
       document.getElementById('set-count').value = appState.turtles.length;
       toggleSettingsForm();
@@ -752,7 +814,7 @@
     }
 
     async function saveSettings() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       const count = parseInt(document.getElementById('set-count').value);
       let newTurtles = [{ name: document.getElementById('set-name-0').value || "烏龜 A", birthday: document.getElementById('set-bday-0').value }];
       if (count === 2) newTurtles.push({ name: document.getElementById('set-name-1').value || "烏龜 B", birthday: document.getElementById('set-bday-1').value });
@@ -765,7 +827,7 @@
     }
 
     async function shareApp() {
-      playClickSound(); // 加上按鍵音效
+      playClickSound(); 
       const shareData = { title: '烏龜日常紀錄', text: '這是我專屬的烏龜日常紀錄小工具，超有質感！推薦給你～', url: window.location.href };
       if (navigator.share) {
         try { await navigator.share(shareData); } catch (err) {}
