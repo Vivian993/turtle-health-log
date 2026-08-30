@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>龜龜小日誌</title>
-  <!-- 📌 iPhone 桌面 App 圖示：它會去抓您上傳到 GitHub 的 custom-icon.png 照片 -->
-  <link rel="apple-touch-icon" href="custom-icon.png">
-  <link rel="icon" type="image/png" href="custom-icon.png">
+  
+  <!-- 📌 iPhone 桌面 App 圖示 -->
   <link rel="apple-touch-icon" href="image.png">
   <link rel="icon" type="image/png" href="image.png">
+
   <!-- 引入 Tailwind CSS (療癒清新版面與動畫) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- 引入 Phosphor Icons -->
@@ -61,7 +61,7 @@
 </head>
 <body class="min-h-screen pb-24 font-sans selection:bg-sage-300 selection:text-white" onclick="initAudio()">
 
-  <!-- 🌟 頂部置頂凍結區 (包含導覽列與烏龜切換頁籤) 🌟 -->
+  <!-- 🌟 頂部置頂凍結區 🌟 -->
   <div class="sticky top-0 z-50 bg-[#F3F7F4]/95 backdrop-blur-md shadow-sm rounded-b-3xl border-b border-sage-100/50 mb-4 pb-3">
     <!-- 頂部導覽列與時鐘 -->
     <header class="px-4 py-3 flex justify-between items-center">
@@ -70,7 +70,7 @@
           <i class="ph-fill ph-turtle text-3xl text-sage-500"></i>
         </div>
         <div>
-          <h1 class="text-lg font-bold text-sage-700 tracking-wider">烏龜日常紀錄</h1>
+          <h1 class="text-lg font-bold text-sage-700 tracking-wider">龜龜小日誌</h1>
           <div id="clockDisplay" class="text-xs text-sage-500 font-medium opacity-80">00:00:00</div>
         </div>
       </div>
@@ -85,7 +85,7 @@
       </div>
     </header>
 
-    <!-- 烏龜頁籤 (現在會跟著上方一起凍結置頂) -->
+    <!-- 烏龜頁籤 (凍結置頂) -->
     <div id="turtleTabs" class="px-4 hidden">
       <div class="flex gap-2 mt-1">
         <button id="tab-0" onclick="switchTurtle(0)" class="flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2 shadow-sm">
@@ -100,32 +100,35 @@
 
   <main class="max-w-md mx-auto px-4 space-y-4">
 
-    <!-- 日期選擇器 -->
+    <!-- 🌟 全新專屬客製化：日期選擇器 🌟 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-sage-50 flex items-center gap-3">
       <div class="bg-sage-100 p-3 rounded-xl text-sage-700">
         <i class="ph ph-calendar-check text-2xl"></i>
       </div>
-      <div class="flex-1">
-        <label class="block text-xs font-bold text-gray-400 mb-1" id="formTitle">今日紀錄</label>
-        <input type="date" id="datePicker" class="w-full bg-transparent text-sage-700 font-bold outline-none cursor-pointer text-lg" onchange="loadDateData()">
+      <div class="flex-1 cursor-pointer" onclick="openCalendarModal()">
+        <label class="block text-[10px] font-bold text-gray-400 mb-1 pointer-events-none">切換日期 / 查看紀錄標記</label>
+        <div class="w-full bg-transparent text-sage-700 font-bold outline-none text-lg flex items-center gap-2">
+            <span id="dateDisplayStr">2026年 01月 01日</span>
+            <i class="ph ph-caret-down text-sm text-sage-300"></i>
+        </div>
       </div>
-      <div id="dateBadge" class="text-sm font-bold text-sage-500 bg-sage-50 px-3 py-1 rounded-lg"></div>
+      <div id="dateBadge" class="text-sm font-bold text-sage-500 bg-sage-50 px-3 py-1 rounded-lg shadow-inner">星期-</div>
     </section>
 
-    <!-- 燈具精準設定與警告 (到期閃爍) -->
+    <!-- 燈具精準設定與警告 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-sage-50">
       <h2 class="text-sm font-bold text-sage-700 mb-3 flex items-center gap-2">
         <i class="ph ph-lightbulb"></i> 燈具安裝日 <span class="text-[10px] text-gray-400 font-normal ml-1">(點擊可設定)</span>
       </h2>
       <div class="flex justify-between items-center gap-4">
-        <!-- UVB 燈 (約半年/180天) -->
+        <!-- UVB 燈 -->
         <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl hover:bg-sage-100 transition relative" onclick="setLampDate('uvb')">
           <i id="uvb-icon" class="ph ph-sun-dim text-2xl text-yellow-500 transition-colors duration-300"></i>
           <span class="text-xs font-bold text-gray-500">UVB燈</span>
           <span id="uvb-date-display" class="text-sm font-bold text-sage-700 transition-colors duration-300">點擊設定</span>
           <div id="uvb-alert" class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden animate-pulse shadow-md">請更換</div>
         </div>
-        <!-- 加熱燈 (約一年/365天) -->
+        <!-- 加熱燈 -->
         <div class="flex-1 flex flex-col items-center gap-1 cursor-pointer bg-sage-50 p-3 rounded-xl hover:bg-sage-100 transition relative" onclick="setLampDate('heat')">
           <i id="heat-icon" class="ph ph-thermometer-hot text-2xl text-orange-500 transition-colors duration-300"></i>
           <span class="text-xs font-bold text-gray-500">加熱燈</span>
@@ -138,7 +141,7 @@
     <!-- 極致便利表單區塊 -->
     <section class="space-y-4">
       
-      <!-- 區塊 1：身體密碼 (去除溫濕度) -->
+      <!-- 區塊 1：身體密碼 -->
       <div class="bg-white rounded-2xl shadow-sm border border-sage-50 overflow-hidden">
         <div class="p-4 bg-sage-50/50 flex justify-between items-center cursor-pointer" onclick="toggleSection('sec-body')">
           <h3 class="font-bold text-sage-700 flex items-center gap-2"><i class="ph ph-ruler"></i> 身體數值</h3>
@@ -160,15 +163,13 @@
         </div>
       </div>
 
-      <!-- 區塊 2：泡水與排泄 (一鍵勾選超方便) -->
+      <!-- 區塊 2：泡水與排泄 (一鍵勾選) -->
       <div class="bg-white rounded-2xl shadow-sm border border-sage-50 overflow-hidden">
         <div class="p-4 bg-sage-50/50 flex justify-between items-center cursor-pointer" onclick="toggleSection('sec-care')">
           <h3 class="font-bold text-sage-700 flex items-center gap-2"><i class="ph ph-drop"></i> 泡水與排泄 <span class="text-[10px] font-normal text-sage-500 bg-sage-100 px-1 rounded ml-1">一鍵勾選</span></h3>
           <i class="ph ph-caret-down text-sage-500 transition-transform duration-300" id="arrow-sec-care"></i>
         </div>
         <div id="sec-care" class="section-content p-4 space-y-5">
-          
-          <!-- 泡水 -->
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-2">今日泡水</label>
             <input type="hidden" id="input-soak" value="">
@@ -179,8 +180,6 @@
               <div class="btn-pill btn-soak inactive" data-val="30分以上" onclick="selectPill('soak', '30分以上')">30分+</div>
             </div>
           </div>
-
-          <!-- 排便 -->
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-2">排便狀況</label>
             <input type="hidden" id="input-poop" value="">
@@ -190,8 +189,6 @@
               <div class="btn-pill btn-poop inactive border-red-200 text-red-500" data-val="異常/水便" onclick="selectPill('poop', '異常/水便')">異常/水便</div>
             </div>
           </div>
-
-          <!-- 排酸 -->
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-2">排酸狀態 (陸龜適用)</label>
             <input type="hidden" id="input-urate" value="">
@@ -202,7 +199,6 @@
               <div class="btn-pill btn-urate inactive border-red-200 text-red-500" data-val="顆粒/結石" onclick="selectPill('urate', '顆粒/結石')">顆粒/結石</div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -242,19 +238,18 @@
       </button>
     </section>
 
-    <!-- 狀態對照表 (完美適應單/雙龜，並顯示登記日期) -->
+    <!-- 狀態對照表 -->
     <section id="comparison-section" class="mt-6 mb-4">
       <div class="flex items-center gap-2 mb-3 px-1">
         <i class="ph-fill ph-notebook text-sage-500 text-xl"></i>
         <h3 class="font-bold text-sage-700">今日紀錄總覽</h3>
       </div>
-      
       <div id="comparison-table-grid" class="grid gap-3 transition-all">
         <!-- 內容由 JS 動態生成 -->
       </div>
     </section>
 
-    <!-- 底部：生日與到家日顯示區 (完整分離版) -->
+    <!-- 底部：生日與到家日顯示區 -->
     <div id="birthdays-container" class="space-y-4 pb-6 px-2">
       <!-- 烏龜A 紀念日 -->
       <div class="bg-white/60 p-4 rounded-2xl shadow-sm border border-white/50 backdrop-blur-sm">
@@ -291,7 +286,37 @@
 
   </main>
 
-  <!-- 🌟 月度總覽 Modal 🌟 -->
+  <!-- 🌟 新功能：客製化專屬日曆 (包含紀錄標記) 🌟 -->
+  <div id="calendarModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110] hidden flex-col justify-center items-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-xl transform transition-all relative">
+      <button onclick="closeCalendarModal()" class="absolute top-4 right-4 text-gray-400 hover:text-sage-700 transition">
+        <i class="ph ph-x-circle text-2xl"></i>
+      </button>
+      
+      <!-- 日曆頭部：切換月份 -->
+      <div class="flex justify-between items-center mb-4 px-2 mt-2">
+        <button onclick="changeCalMonth(-1)" class="p-2 bg-sage-50 text-sage-700 rounded-full hover:bg-sage-100 transition shadow-sm"><i class="ph ph-caret-left font-bold"></i></button>
+        <h3 id="calMonthYearStr" class="font-bold text-sage-700 text-lg tracking-widest">2026年 8月</h3>
+        <button onclick="changeCalMonth(1)" class="p-2 bg-sage-50 text-sage-700 rounded-full hover:bg-sage-100 transition shadow-sm"><i class="ph ph-caret-right font-bold"></i></button>
+      </div>
+
+      <!-- 星期標題 -->
+      <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-gray-400 mb-3 bg-sage-50 py-2 rounded-xl">
+        <div class="text-red-400">日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div class="text-sage-500">六</div>
+      </div>
+      
+      <!-- 日期格子 -->
+      <div id="calGrid" class="grid grid-cols-7 gap-y-2 gap-x-1 text-center">
+        <!-- 內容由 JS 動態生成 -->
+      </div>
+
+      <p class="text-center text-[10px] text-sage-400 mt-6 font-bold flex justify-center items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-sage-500"></span> 底部有綠點代表當天有紀錄喔！
+      </p>
+    </div>
+  </div>
+
+  <!-- 月度總覽 Modal -->
   <div id="monthlyModal" class="fixed inset-0 bg-sage-50 z-[100] hidden flex-col transition-all">
     <div class="bg-white px-4 py-3 flex justify-between items-center shadow-sm relative z-10">
       <h2 class="text-lg font-bold text-sage-700 flex items-center gap-2"><i class="ph-fill ph-calendar-star text-xl text-sage-500"></i> 月度總覽</h2>
@@ -300,7 +325,8 @@
     
     <div class="bg-white p-4 shadow-sm z-0 relative">
       <label class="block text-xs font-bold text-sage-500 mb-1">請選擇要回顧的月份</label>
-      <input type="month" id="monthPicker" class="w-full bg-sage-50 text-sage-700 p-3 rounded-xl outline-none font-bold focus:ring-2 focus:ring-sage-300" onchange="renderMonthlyData()">
+      <!-- 加入 onclick 發出聲音 -->
+      <input type="month" id="monthPicker" class="w-full bg-sage-50 text-sage-700 p-3 rounded-xl outline-none font-bold focus:ring-2 focus:ring-sage-300" onclick="playClickSound()" onchange="renderMonthlyData()">
     </div>
 
     <div id="monthly-content" class="flex-1 overflow-y-auto p-4 space-y-4">
@@ -333,12 +359,12 @@
           <input type="text" id="set-name-0" placeholder="名字" class="w-full mb-3 p-2 rounded-lg bg-white border-none outline-none text-sm focus:ring-2 focus:ring-sage-300 transition">
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-[10px] text-gray-400 mb-1">🎂 推算生日 (算年紀)</label>
-              <input type="date" id="set-bday-0" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
+              <label class="block text-[10px] text-gray-400 mb-1">🎂 推算生日</label>
+              <input type="date" id="set-bday-0" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition" onclick="playClickSound()">
             </div>
             <div>
-              <label class="block text-[10px] text-gray-400 mb-1">🏠 到家日 (算陪伴)</label>
-              <input type="date" id="set-arr-0" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
+              <label class="block text-[10px] text-gray-400 mb-1">🏠 到家日</label>
+              <input type="date" id="set-arr-0" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition" onclick="playClickSound()">
             </div>
           </div>
         </div>
@@ -348,12 +374,12 @@
           <input type="text" id="set-name-1" placeholder="名字" class="w-full mb-3 p-2 rounded-lg bg-white border-none outline-none text-sm focus:ring-2 focus:ring-sage-300 transition">
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-[10px] text-gray-400 mb-1">🎂 推算生日 (算年紀)</label>
-              <input type="date" id="set-bday-1" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
+              <label class="block text-[10px] text-gray-400 mb-1">🎂 推算生日</label>
+              <input type="date" id="set-bday-1" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition" onclick="playClickSound()">
             </div>
             <div>
-              <label class="block text-[10px] text-gray-400 mb-1">🏠 到家日 (算陪伴)</label>
-              <input type="date" id="set-arr-1" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition">
+              <label class="block text-[10px] text-gray-400 mb-1">🏠 到家日</label>
+              <input type="date" id="set-arr-1" class="w-full p-2 rounded-lg bg-white border-none outline-none text-xs text-gray-600 focus:ring-2 focus:ring-sage-300 transition" onclick="playClickSound()">
             </div>
           </div>
         </div>
@@ -361,6 +387,20 @@
         <button onclick="saveSettings()" class="w-full bg-sage-700 text-white font-bold p-3 rounded-xl mt-4 hover:bg-sage-800 transition shadow-md">
           儲存設定
         </button>
+
+        <!-- 備份與還原功能區 -->
+        <div class="pt-4 mt-4 border-t border-sage-200">
+          <h3 class="font-bold text-sage-700 mb-3 text-sm flex items-center gap-2"><i class="ph-fill ph-database"></i> 資料備份與還原</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="exportBackup()" class="bg-sage-100 text-sage-700 font-bold p-3 rounded-xl hover:bg-sage-200 transition text-xs flex justify-center items-center gap-1">
+              <i class="ph ph-download-simple text-lg"></i> 匯出備份
+            </button>
+            <label class="bg-sage-100 text-sage-700 font-bold p-3 rounded-xl hover:bg-sage-200 transition text-xs flex justify-center items-center gap-1 cursor-pointer" onclick="playClickSound()">
+              <i class="ph ph-upload-simple text-lg"></i> 匯入還原
+              <input type="file" id="import-file" accept=".json" class="hidden" onchange="handleImportBackup(event)">
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -443,6 +483,10 @@
     let currentDailyData = [createEmptyRecord(), createEmptyRecord()];
     let activeTurtleIndex = 0;
     let selectedDate = new Date().toISOString().split('T')[0];
+    
+    // 日曆系統用變數
+    let currentCalDate = new Date();
+    let recordedDatesSet = new Set();
 
     // 通用時間計算函數
     function timeSince(dateStr) {
@@ -469,13 +513,12 @@
       await DB.init();
       updateClock(); setInterval(updateClock, 1000);
       selectedDate = new Date().toISOString().split('T')[0];
-      document.getElementById('datePicker').value = selectedDate;
-      document.getElementById('dateBadge').textContent = formatDateBadge(selectedDate);
       
       const savedSettings = await DB.get(DB.storeSettings, 'userConfig');
       if (savedSettings) appState = { ...appState, ...savedSettings };
       else setTimeout(openSettings, 500);
 
+      updateDateDisplay();
       updateLampUI();
       renderAppLayout();
       loadDateData(); 
@@ -485,7 +528,14 @@
       const t = new Date();
       document.getElementById('clockDisplay').textContent = `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}:${String(t.getSeconds()).padStart(2, '0')}`;
     }
-    function formatDateBadge(dateStr) { const d = new Date(dateStr); return `${d.getMonth() + 1}月${d.getDate()}日`; }
+
+    // 更新主畫面日期顯示 (加上星期幾)
+    function updateDateDisplay() {
+      const d = new Date(selectedDate);
+      const daysStr = ['日', '一', '二', '三', '四', '五', '六'];
+      document.getElementById('dateDisplayStr').textContent = `${d.getFullYear()}年 ${String(d.getMonth() + 1).padStart(2, '0')}月 ${String(d.getDate()).padStart(2, '0')}日`;
+      document.getElementById('dateBadge').textContent = `星期${daysStr[d.getDay()]}`;
+    }
 
     function toggleSection(id) {
       playClickSound(); 
@@ -505,7 +555,6 @@
       const isTwoTurtles = appState.turtles.length === 2;
       const t0 = appState.turtles[0];
       
-      // 更新標籤和紀錄表名稱
       const name0 = t0.name || "烏龜 A";
       document.getElementById('tab-name-0').innerText = name0;
       document.getElementById('bday-name-0').innerText = name0;
@@ -539,7 +588,6 @@
       document.getElementById('birthdays-container').classList.remove('hidden');
       switchTurtle(activeTurtleIndex);
       
-      // 預設展開
       ['sec-body', 'sec-care'].forEach(id => {
         const el = document.getElementById(id);
         if(!el.style.maxHeight || el.style.maxHeight === '0px') toggleSection(id);
@@ -551,16 +599,14 @@
       saveFormToTemp(); activeTurtleIndex = index;
       if(index === 0 || index === 1) playClickSound(); 
       
-      document.getElementById('tab-0').className = index === 0 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2";
-      document.getElementById('tab-1').className = index === 1 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2";
+      document.getElementById('tab-0').className = index === 0 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2 shadow-sm" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2 shadow-sm";
+      document.getElementById('tab-1').className = index === 1 ? "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-active flex justify-center items-center gap-2 shadow-sm" : "flex-1 py-3 rounded-xl font-bold transition duration-300 tab-inactive flex justify-center items-center gap-2 shadow-sm";
 
       loadTempToForm(); 
     }
 
     async function loadDateData() {
-      playClickSound(); 
-      selectedDate = document.getElementById('datePicker').value;
-      document.getElementById('dateBadge').textContent = formatDateBadge(selectedDate);
+      updateDateDisplay();
       currentDailyData = [createEmptyRecord(), createEmptyRecord()];
       const data = await DB.get(DB.storeData, selectedDate);
       if (data) {
@@ -577,9 +623,7 @@
     function selectPill(category, value) {
       playClickSound();
       const input = document.getElementById(`input-${category}`);
-      
-      if(input.value === value) { input.value = ""; } 
-      else { input.value = value; }
+      if(input.value === value) { input.value = ""; } else { input.value = value; }
 
       const buttons = document.querySelectorAll(`.btn-${category}`);
       buttons.forEach(btn => {
@@ -634,7 +678,91 @@
     }
 
     /* =========================================
-       7. 燈具精準設定與警告
+       7. 客製化專屬日曆 Modal (含紀錄標記) 🟢
+       ========================================= */
+    async function fetchRecordedDates() {
+      try {
+        const dbData = await DB.getAllData();
+        recordedDatesSet = new Set(dbData.keys);
+      } catch(e) { console.error(e); }
+    }
+
+    async function openCalendarModal() {
+      playClickSound();
+      await fetchRecordedDates(); // 每次打開前先抓取最新有紀錄的日期
+      currentCalDate = new Date(selectedDate);
+      renderCalendar();
+      document.getElementById('calendarModal').classList.remove('hidden');
+      document.getElementById('calendarModal').classList.add('flex');
+    }
+
+    function closeCalendarModal() {
+      playClickSound();
+      document.getElementById('calendarModal').classList.add('hidden');
+      document.getElementById('calendarModal').classList.remove('flex');
+    }
+
+    function changeCalMonth(offset) {
+      playClickSound();
+      currentCalDate.setMonth(currentCalDate.getMonth() + offset);
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+      document.getElementById('calMonthYearStr').innerText = `${year}年 ${month + 1}月`;
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+      
+      // 空白格
+      for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div></div>`; }
+      
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      // 填入日期
+      for (let i = 1; i <= daysInMonth; i++) {
+        const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        const hasRecord = recordedDatesSet.has(dStr);
+        const isSelected = dStr === selectedDate;
+        const isToday = dStr === todayStr;
+        
+        let btnClass = "w-10 h-10 mx-auto flex flex-col items-center justify-center rounded-2xl text-[15px] transition font-bold relative ";
+        
+        if (isSelected) {
+            btnClass += "bg-sage-500 text-white shadow-md";
+        } else if (isToday) {
+            btnClass += "bg-sage-100 text-sage-700 border-2 border-sage-300";
+        } else {
+            btnClass += "text-gray-600 hover:bg-sage-50";
+        }
+        
+        // 💡 靈魂功能：有紀錄的日期加一顆綠點
+        const dotHtml = hasRecord ? `<div class="w-1.5 h-1.5 ${isSelected ? 'bg-white' : 'bg-sage-500'} rounded-full absolute bottom-1"></div>` : '';
+        
+        grid.innerHTML += `
+            <div class="py-1 cursor-pointer" onclick="selectDateFromCal('${dStr}')">
+                <div class="${btnClass}">
+                    <span class="${hasRecord ? '-mt-1.5' : ''}">${i}</span>
+                    ${dotHtml}
+                </div>
+            </div>
+        `;
+      }
+    }
+
+    function selectDateFromCal(dStr) {
+      playClickSound();
+      selectedDate = dStr;
+      closeCalendarModal();
+      loadDateData(); // 載入選擇日期的資料
+    }
+
+    /* =========================================
+       8. 燈具精準設定與警告
        ========================================= */
     function calcDays(dateString) {
       if (!dateString) return null;
@@ -691,7 +819,7 @@
       
       const { value: selectedLampDate } = await Swal.fire({
         title: `設定 ${name} 安裝日`,
-        html: `<input type="date" id="lamp-input" class="w-full bg-sage-50 text-sage-700 p-3 rounded-xl outline-none font-bold text-lg text-center" value="${currentVal}">`,
+        html: `<input type="date" id="lamp-input" class="w-full bg-sage-50 text-sage-700 p-3 rounded-xl outline-none font-bold text-lg text-center" value="${currentVal}" onclick="playClickSound()">`,
         showCancelButton: true, confirmButtonColor: '#6B9071', confirmButtonText: '儲存', cancelButtonText: '取消',
         preConfirm: () => document.getElementById('lamp-input').value
       });
@@ -705,7 +833,7 @@
     }
 
     /* =========================================
-       8. 完美動態適應：底部紀錄表
+       9. 完美動態適應：底部紀錄表
        ========================================= */
     function renderBottomSummaryTable() {
       saveFormToTemp(); 
@@ -743,7 +871,7 @@
     }
 
     /* =========================================
-       9. 照片處理 (上限2張) 與 Canvas 壓縮
+       10. 照片處理 (上限2張) 與 Canvas 壓縮
        ========================================= */
     async function handlePhotoUpload(event) {
       const files = event.target.files;
@@ -793,14 +921,14 @@
     }
 
     /* =========================================
-       10. 月度總覽 (強大回顧功能)
+       11. 月度總覽 (強大回顧功能)
        ========================================= */
     async function openMonthlyOverview() {
       playClickSound();
       document.getElementById('monthlyModal').classList.remove('hidden');
       document.getElementById('monthlyModal').classList.add('flex');
       
-      const currentMonth = selectedDate.substring(0, 7); // "YYYY-MM"
+      const currentMonth = selectedDate.substring(0, 7); 
       document.getElementById('monthPicker').value = currentMonth;
       
       renderMonthlyData();
@@ -814,7 +942,7 @@
 
     async function renderMonthlyData() {
       const content = document.getElementById('monthly-content');
-      const targetMonth = document.getElementById('monthPicker').value; // "YYYY-MM"
+      const targetMonth = document.getElementById('monthPicker').value; 
       
       if(!targetMonth) return;
 
@@ -887,7 +1015,7 @@
     }
 
     /* =========================================
-       11. 設定功能
+       12. 設定與「備份還原」功能
        ========================================= */
     function openSettings() {
       playClickSound(); 
@@ -903,11 +1031,14 @@
         document.getElementById('set-arr-1').value = appState.turtles[1]?.arrival || "";
       }
     }
+
     function closeSettings() { playClickSound(); document.getElementById('settingsModal').classList.add('hidden'); }
+    
     function toggleSettingsForm() {
       if (document.getElementById('set-count').value === "2") document.getElementById('settings-turtle-2').classList.remove('hidden');
       else document.getElementById('settings-turtle-2').classList.add('hidden');
     }
+
     async function saveSettings() {
       playClickSound(); 
       const count = parseInt(document.getElementById('set-count').value);
@@ -929,6 +1060,64 @@
       await DB.set(DB.storeSettings, 'userConfig', appState);
       closeSettings(); renderAppLayout(); loadDateData(); 
       Swal.fire({ icon: 'success', title: '設定已更新', confirmButtonColor: '#6B9071', timer: 1500 });
+    }
+
+    async function exportBackup() {
+      playClickSound();
+      try {
+        Swal.fire({ title: '打包備份中...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        const settings = await DB.get(DB.storeSettings, 'userConfig');
+        const allData = await DB.getAllData();
+        
+        const backupData = {
+          appName: "龜龜小日誌", exportDate: new Date().toISOString(),
+          settings: settings, records: { keys: allData.keys, values: allData.values }
+        };
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+        const downloadAnchorNode = document.createElement('a');
+        const currentDate = new Date().toISOString().split('T')[0].replace(/-/g, '');
+        
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", `龜龜小日誌_備份_${currentDate}.json`);
+        document.body.appendChild(downloadAnchorNode); 
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+        
+        Swal.fire({ icon: 'success', title: '匯出成功！', text: '請將下載的檔案妥善保存喔！', confirmButtonColor: '#6B9071' });
+      } catch (err) { Swal.fire({ icon: 'error', title: '匯出失敗', text: '打包過程中發生錯誤。' }); }
+    }
+
+    async function handleImportBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      playClickSound();
+
+      const result = await Swal.fire({
+        title: '警告：資料覆蓋',
+        text: '匯入備份會清除並取代目前的所有的紀錄與照片，確定要繼續嗎？',
+        icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6B9071',
+        confirmButtonText: '確定覆蓋並還原', cancelButtonText: '取消'
+      });
+
+      if (result.isConfirmed) {
+        Swal.fire({ title: '資料還原中...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (data.appName !== "龜龜小日誌" || !data.settings || !data.records) throw new Error("檔案格式不正確");
+            await DB.set(DB.storeSettings, 'userConfig', data.settings);
+            if (data.records.keys && data.records.values) {
+              for (let i = 0; i < data.records.keys.length; i++) { await DB.set(DB.storeData, data.records.keys[i], data.records.values[i]); }
+            }
+            await Swal.fire({ icon: 'success', title: '還原成功！', text: '系統將重新載入。', confirmButtonColor: '#6B9071' });
+            window.location.reload(); 
+          } catch (err) { Swal.fire({ icon: 'error', title: '匯入失敗', text: '檔案可能損毀或格式錯誤。' }); }
+        };
+        reader.readAsText(file);
+      }
+      event.target.value = ''; 
     }
 
     window.onload = initApp;
